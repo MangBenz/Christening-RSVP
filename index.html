@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Shiloh Beatus's Christening</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👶</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{ margin:0; background:#f7f3ef; font-family:'Cormorant Garamond', serif; display:flex; justify-content:center; padding:12px; }
+  .wrapper{ width:100%; max-width:520px; background:white; border-radius:clamp(16px, 4vw, 28px); overflow:hidden; box-shadow:0 10px 30px rgba(100,120,140,0.08); border:1px solid #eef1f5; }
+  .video-wrap{ position:relative; width:100%; aspect-ratio: 9 / 12; max-height: 65vh; min-height: 380px; background:white; overflow:hidden; display:flex; align-items:flex-end; justify-content:center; padding-top:2%; }
+  .video-wrap video{ width:100%; height:92%; object-fit:contain; display:block; background:white; }
+  .fade-top, .fade-bottom, .fade-left, .fade-right{ position:absolute; pointer-events:none; z-index:2; }
+  .fade-top{ top:0; left:0; right:0; height:18%; background:linear-gradient(to bottom, white 30%, transparent); }
+  .fade-bottom{ bottom:0; left:0; right:0; height:18%; background:linear-gradient(to top, white 30%, transparent); }
+  .fade-left{ top:0; bottom:0; left:0; width:18%; background:linear-gradient(to right, white 35%, transparent); }
+  .fade-right{ top:0; bottom:0; right:0; width:18%; background:linear-gradient(to left, white 35%, transparent); }
+  .video-label{ text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:8px 0 4px; }
+  .content{ padding:clamp(8px, 2.5vw, 16px) clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center; }
+  .dove{ font-size:clamp(22px, 5vw, 28px); }
+  .cross{ color:#cbb989; font-size:clamp(16px, 4vw, 20px); }
+  .name{ font-family:'Great Vibes', cursive; font-size:clamp(52px, 14vw, 72px); color:#7aa0b8; margin:2px 0; line-height:1; }
+  .desc{ color:#5a6d7e; font-size:clamp(14px, 3.5vw, 16px); line-height:1.5; margin:6px 0; }
+  .event-box{ background:#f9fbfc; border-radius:14px; padding:12px; margin:12px 0; border:1px dashed #d7e3ea; color:#3f5464; font-size:clamp(12px, 3.2vw, 14px); line-height:1.5; }
+  .rsvp-section{ text-align:left; margin-top:16px; padding-top:14px; border-top:1px solid #eef2f6; }
+  .rsvp-section h3{ text-align:center; letter-spacing:3px; color:#b89f6a; margin:0 0 10px; font-size:11px; }
+  .rsvp-section input, .rsvp-section select, .rsvp-section textarea{ width:100%; padding:11px 12px; margin:5px 0; border:1.5px solid #dde7ec; border-radius:11px; font-family:inherit; font-size:16px; background:#fdfeff; transition: all 0.2s; }
+  .rsvp-section input:disabled{ background:#f1f3f5; color:#a0aab3; cursor:not-allowed; border-color:#e2e6ea; }
+  .btn{ width:100%; margin-top:10px; padding:12px; background:#7aa0b8; color:white; border:none; border-radius:30px; font-size:13px; letter-spacing:2px; font-weight:600; cursor:pointer; }
+  #status{ text-align:center; margin-top:8px; color:#7aa0b8; font-weight:600; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="video-wrap">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="Sample1.mp4" type="video/mp4">
+    </video>
+    <div class="fade-top"></div>
+    <div class="fade-bottom"></div>
+    <div class="fade-left"></div>
+    <div class="fade-right"></div>
+  </div>
+  <div class="video-label">CHRISTENING INVITATION</div>
+  <div class="content">
+    <div class="dove">🕊️</div>
+    <div class="cross">†</div>
+    <div class="name">Shiloh</div>
+    <div style="letter-spacing:3px; color:#b89f6a; font-size:11px; font-weight:600;">IS BEING CHRISTENED</div>
+    <div class="desc">Join us as we celebrate the baptism of our baby boy</div>
+    <div class="event-box">
+      <b>Sunday • November 22, 2026 • 10:30 AM</b><br>
+      St. Andrew Parish the Apostle Church<br>
+      Reception: 1:00 PM - Amaluz Pavilion
+    </div>
+    <div class="rsvp-section">
+      <h3>PLEASE RESPOND</h3>
+      <form id="rsvpForm">
+        <input type="text" id="name" placeholder="Your Full Name" required>
+        <select id="attending" required>
+          <option value="" disabled selected>Will you attend?</option>
+          <option value="Yes, Joyfully Attend">Yes, Joyfully Attend</option>
+          <option value="Sorry, Can't Attend">Sorry, Can't Attend</option>
+        </select>
+        <input type="number" id="guests" placeholder="Number of Guests" inputmode="numeric">
+        <textarea id="message" rows="2" placeholder="Message or Prayer for Shiloh"></textarea>
+        <button class="btn" type="submit">SEND RSVP</button>
+      </form>
+      <div id="status"></div>
+    </div>
+  </div>
+</div>
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn1tFi6g8XqcPi1hJ6SrAenyEqlbrwRRubP0aEzojkyT9tCMO8hxyWB68_8p51tXaT/exec";
+  
+  // DISABLE GUESTS WHEN CAN'T ATTEND
+  const attendingSelect = document.getElementById("attending");
+  const guestsInput = document.getElementById("guests");
+  
+  attendingSelect.addEventListener("change", () => {
+    if(attendingSelect.value === "Sorry, Can't Attend"){
+      guestsInput.value = "";
+      guestsInput.disabled = true;
+      guestsInput.placeholder = "Not needed";
+    } else {
+      guestsInput.disabled = false;
+      guestsInput.placeholder = "Number of Guests";
+    }
+  });
+
+  document.getElementById("rsvpForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    document.getElementById("status").innerText = "Sending...";
+    const data = { 
+      name: document.getElementById("name").value, 
+      attending: document.getElementById("attending").value, 
+      guests: document.getElementById("guests").value || "0", 
+      message: document.getElementById("message").value 
+    };
+    await fetch(SCRIPT_URL, { method:"POST", mode:"no-cors", body:JSON.stringify(data) });
+    document.getElementById("status").innerText = "Thank you! RSVP saved ♡";
+    e.target.reset();
+    guestsInput.disabled = false;
+    guestsInput.placeholder = "Number of Guests";
+  });
+</script>
+</body>
+</html>
