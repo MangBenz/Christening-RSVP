@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>John Shiloh Beatus's Christening</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👶</text></svg>">
+<link rel="icon" href="data:image/svg+xml,[STRIPPED]">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box}
@@ -17,7 +17,7 @@
   .fade-bottom{ bottom:0; left:0; right:0; height:18%; background:linear-gradient(to top, white 30%, transparent); }
   .fade-left{ top:0; bottom:0; left:0; width:18%; background:linear-gradient(to right, white 35%, transparent); }
   .fade-right{ top:0; bottom:0; right:0; width:18%; background:linear-gradient(to left, white 35%, transparent); }
-  .sound-btn{ position:absolute; bottom:14px; right:14px; z-index:10; background:rgba(255,255,255,0.95); border:1px solid #dde7ec; border-radius:20px; padding:7px 12px; font-size:11px; font-weight:700; color:#7aa0b8; cursor:pointer; }
+  .sound-btn{ position:absolute; bottom:14px; right:14px; z-index:10; background:#7aa0b8; border:none; border-radius:20px; padding:8px 14px; font-size:11px; font-weight:700; color:white; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
   .video-label{ text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:8px 0 4px; }
   .content{ padding:clamp(8px, 2.5vw, 16px) clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center; }
   .dove{ font-size:clamp(22px, 5vw, 28px); }
@@ -40,14 +40,15 @@
     <video autoplay muted loop playsinline preload="auto" id="heroVideo">
       <source src="Sample1.mp4" type="video/mp4">
     </video>
-    <audio id="bgAudio" loop preload="auto">
-      <source src="https://cdn.pixabay.com/download/audio/2023/01/audio_816821e627.mp3?filename=ambient-piano-123351.mp3" type="audio/mpeg">
+    <!-- DESKTOP AUDIO FIX -->
+    <audio id="bgAudio" loop preload="auto" crossorigin="anonymous">
+      <source src="https://cdn.pixabay.com/audio/2022/02/07/audio_2a0d0e4e92.mp3" type="audio/mpeg">
     </audio>
     <div class="fade-top"></div>
     <div class="fade-bottom"></div>
     <div class="fade-left"></div>
     <div class="fade-right"></div>
-    <button class="sound-btn" id="soundBtn">🔇 TAP FOR SOUND</button>
+    <button class="sound-btn" id="soundBtn">🔇 CLICK FOR SOUND</button>
   </div>
   <div class="video-label">CHRISTENING INVITATION</div>
   <div class="content">
@@ -80,54 +81,52 @@
   </div>
 </div>
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn1tFi6g8XqcPi1hJ6SrAenyEqlbrwRRubP0aEzojkyT9tCMO8hxyWB68_8p51tXaT/exec";
   const video = document.getElementById("heroVideo");
   const audio = document.getElementById("bgAudio");
   const soundBtn = document.getElementById("soundBtn");
-
-  // AUTOPLAY VIDEO + AUDIO
-  async function initMedia(){
-    try{
-      video.muted = true;
-      await video.play();
-      audio.volume = 0.5;
-      audio.play().catch(()=>{});
-    }catch(e){}
-  }
-  document.addEventListener("DOMContentLoaded", initMedia);
-  window.addEventListener("load", initMedia);
-
+  
   let isSoundOn = false;
-  function toggleSound(){
-    if(!isSoundOn){
-      video.muted = false;
-      video.volume = 1;
-      audio.volume = 0.4;
-      audio.play().catch(()=>{});
-      video.play();
-      soundBtn.textContent = "🔊 SOUND ON";
-      isSoundOn = true;
-    } else {
-      video.muted = true;
-      audio.pause();
-      soundBtn.textContent = "🔇 TAP FOR SOUND";
-      isSoundOn = false;
-    }
-  }
-  soundBtn.addEventListener("click", toggleSound);
 
-  // Auto unmute on first interaction anywhere
-  const autoUnmute = () => {
-    if(!isSoundOn){
-      toggleSound();
-    }
-    document.removeEventListener('touchstart', autoUnmute);
-    document.removeEventListener('click', autoUnmute);
-  };
-  document.addEventListener('touchstart', autoUnmute, {once:true});
-  document.addEventListener('click', autoUnmute, {once:true});
+  // Initial play muted (always works)
+  video.muted = true;
+  video.play().catch(()=>{});
+  audio.volume = 0.7;
+
+  function enableSound(){
+    video.muted = false;
+    video.volume = 1;
+    audio.volume = 0.7;
+    audio.play().then(()=>{
+      video.play();
+      soundBtn.textContent = "🔊 SOUND ON - CLICK TO MUTE";
+      isSoundOn = true;
+    }).catch(e=>{
+      console.log("Audio blocked:", e);
+      // Try again
+      audio.play();
+    });
+  }
+
+  function disableSound(){
+    video.muted = true;
+    audio.pause();
+    soundBtn.textContent = "🔇 CLICK FOR SOUND";
+    isSoundOn = false;
+  }
+
+  soundBtn.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    if(isSoundOn) disableSound();
+    else enableSound();
+  });
+
+  // Desktop: click anywhere on page enables sound
+  document.body.addEventListener("click", ()=>{
+    if(!isSoundOn) enableSound();
+  }, {once:true});
 
   // Form
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn1tFi6g8XqcPi1hJ6SrAenyEqlbrwRRubP0aEzojkyT9tCMO8hxyWB68_8p51tXaT/exec";
   const attendingSelect = document.getElementById("attending");
   const guestsInput = document.getElementById("guests");
   const nameInput = document.getElementById("name");
@@ -142,11 +141,7 @@
   document.getElementById("rsvpForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const fullName = nameInput.value.trim();
-    if(fullName.length < 2){
-      nameError.style.display = "block";
-      nameInput.focus();
-      return;
-    }
+    if(fullName.length < 2){ nameError.style.display = "block"; nameInput.focus(); return; }
     nameError.style.display = "none";
     if(!attendingSelect.value){ document.getElementById("status").innerText = "Please select if you will attend *"; return; }
     document.getElementById("status").innerText = "Sending...";
