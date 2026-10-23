@@ -11,22 +11,13 @@
   body{ margin:0; background:#f7f3ef; font-family:'Cormorant Garamond', serif; display:flex; justify-content:center; padding:12px; }
   .wrapper{ width:100%; max-width:520px; background:white; border-radius:clamp(16px, 4vw, 28px); overflow:hidden; box-shadow:0 10px 30px rgba(100,120,140,0.08); border:1px solid #eef1f5; }
   .video-wrap{ position:relative; width:100%; aspect-ratio: 9 / 12; max-height: 65vh; min-height: 380px; background:white; overflow:hidden; display:flex; align-items:flex-end; justify-content:center; padding-top:2%; }
-  .video-wrap video{ width:100%; height:92%; object-fit:contain; display:block; background:white; 
-    /* Extra soft edge */
-    -webkit-mask-image: radial-gradient(ellipse at center, black 52%, rgba(0,0,0,0.8) 68%, transparent 88%);
-    mask-image: radial-gradient(ellipse at center, black 52%, rgba(0,0,0,0.6) 72%, transparent 92%);
-  }
+  .video-wrap video{ width:100%; height:92%; object-fit:contain; display:block; background:white; }
   .fade-top, .fade-bottom, .fade-left, .fade-right{ position:absolute; pointer-events:none; z-index:2; }
-  /* MAX FADING - NO EDGE LINE */
-  .fade-top{ top:0; left:0; right:0; height:55%; background:linear-gradient(to bottom, white 0%, white 35%, rgba(255,255,255,0.95) 55%, rgba(255,255,255,0.6) 75%, transparent 100%); }
-  .fade-bottom{ bottom:0; left:0; right:0; height:40%; background:linear-gradient(to top, white 0%, white 45%, rgba(255,255,255,0.7) 70%, transparent 100%); }
-  .fade-left{ top:0; bottom:0; left:0; width:48%; background:linear-gradient(to right, white 0%, white 30%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.6) 75%, transparent 100%); }
-  .fade-right{ top:0; bottom:0; right:0; width:48%; background:linear-gradient(to left, white 0%, white 30%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.6) 75%, transparent 100%); }
-  
-  /* Extra vignette blur for super soft */
-  .soft-vignette{ position:absolute; inset:0; z-index:3; pointer-events:none; background: radial-gradient(ellipse at center, transparent 45%, rgba(255,255,255,0.4) 70%, white 92%); }
-
-  .sound-btn{ position:absolute; bottom:14px; right:14px; z-index:10; background:#7aa0b8; border:none; border-radius:20px; padding:8px 14px; font-size:11px; font-weight:700; color:white; cursor:pointer; }
+  .fade-top{ top:0; left:0; right:0; height:18%; background:linear-gradient(to bottom, white 30%, transparent); }
+  .fade-bottom{ bottom:0; left:0; right:0; height:18%; background:linear-gradient(to top, white 30%, transparent); }
+  .fade-left{ top:0; bottom:0; left:0; width:18%; background:linear-gradient(to right, white 35%, transparent); }
+  .fade-right{ top:0; bottom:0; right:0; width:18%; background:linear-gradient(to left, white 35%, transparent); }
+  .sound-btn{ position:absolute; bottom:14px; right:14px; z-index:10; background:#7aa0b8; border:none; border-radius:20px; padding:8px 14px; font-size:11px; font-weight:700; color:white; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
   .video-label{ text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:8px 0 4px; }
   .content{ padding:clamp(8px, 2.5vw, 16px) clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center; }
   .dove{ font-size:clamp(22px, 5vw, 28px); }
@@ -49,15 +40,15 @@
     <video autoplay muted loop playsinline preload="auto" id="heroVideo">
       <source src="Sample1.mp4" type="video/mp4">
     </video>
-    <audio id="bgAudio" loop preload="auto">
+    <!-- DESKTOP AUDIO FIX -->
+    <audio id="bgAudio" loop preload="auto" crossorigin="anonymous">
       <source src="https://cdn.pixabay.com/audio/2022/02/07/audio_2a0d0e4e92.mp3" type="audio/mpeg">
     </audio>
     <div class="fade-top"></div>
     <div class="fade-bottom"></div>
     <div class="fade-left"></div>
     <div class="fade-right"></div>
-    <div class="soft-vignette"></div>
-    <button class="sound-btn" id="soundBtn">🔇 TAP FOR SOUND</button>
+    <button class="sound-btn" id="soundBtn">🔇 CLICK FOR SOUND</button>
   </div>
   <div class="video-label">CHRISTENING INVITATION</div>
   <div class="content">
@@ -93,23 +84,60 @@
   const video = document.getElementById("heroVideo");
   const audio = document.getElementById("bgAudio");
   const soundBtn = document.getElementById("soundBtn");
+  
   let isSoundOn = false;
-  video.muted = true; video.play().catch(()=>{});
-  audio.volume = 0.7;
-  function enableSound(){ video.muted = false; video.volume = 1; audio.volume = 0.7; audio.play().then(()=>{ video.play(); soundBtn.textContent = "🔊 SOUND ON"; isSoundOn = true; }).catch(()=>{}); }
-  function disableSound(){ video.muted = true; audio.pause(); soundBtn.textContent = "🔇 TAP FOR SOUND"; isSoundOn = false; }
-  soundBtn.addEventListener("click", (e)=>{ e.stopPropagation(); if(isSoundOn) disableSound(); else enableSound(); });
-  document.body.addEventListener("click", ()=>{ if(!isSoundOn) enableSound(); }, {once:true});
 
+  // Initial play muted (always works)
+  video.muted = true;
+  video.play().catch(()=>{});
+  audio.volume = 0.7;
+
+  function enableSound(){
+    video.muted = false;
+    video.volume = 1;
+    audio.volume = 0.7;
+    audio.play().then(()=>{
+      video.play();
+      soundBtn.textContent = "🔊 SOUND ON - CLICK TO MUTE";
+      isSoundOn = true;
+    }).catch(e=>{
+      console.log("Audio blocked:", e);
+      // Try again
+      audio.play();
+    });
+  }
+
+  function disableSound(){
+    video.muted = true;
+    audio.pause();
+    soundBtn.textContent = "🔇 CLICK FOR SOUND";
+    isSoundOn = false;
+  }
+
+  soundBtn.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    if(isSoundOn) disableSound();
+    else enableSound();
+  });
+
+  // Desktop: click anywhere on page enables sound
+  document.body.addEventListener("click", ()=>{
+    if(!isSoundOn) enableSound();
+  }, {once:true});
+
+  // Form
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn1tFi6g8XqcPi1hJ6SrAenyEqlbrwRRubP0aEzojkyT9tCMO8hxyWB68_8p51tXaT/exec";
   const attendingSelect = document.getElementById("attending");
   const guestsInput = document.getElementById("guests");
   const nameInput = document.getElementById("name");
   const nameError = document.getElementById("nameError");
+
   attendingSelect.addEventListener("change", () => {
-    if(attendingSelect.value === "Sorry, Can't Attend"){ guestsInput.value = ""; guestsInput.disabled = true; guestsInput.placeholder = "Not needed"; }
-    else { guestsInput.disabled = false; guestsInput.placeholder = "Number of Guests"; }
+    if(attendingSelect.value === "Sorry, Can't Attend"){
+      guestsInput.value = ""; guestsInput.disabled = true; guestsInput.placeholder = "Not needed";
+    } else { guestsInput.disabled = false; guestsInput.placeholder = "Number of Guests"; }
   });
+
   document.getElementById("rsvpForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const fullName = nameInput.value.trim();
