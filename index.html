@@ -4,56 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>John Shiloh Beatus's Christening</title>
+<link rel="icon" href="data:image/svg+xml,[STRIPPED]">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box; margin:0; padding:0;}
-  body{ background:#f7f3ef; font-family:'Cormorant Garamond', serif; display:flex; justify-content:center; padding:0; }
-  .wrapper{ 
-    width:100%; 
-    max-width:520px; 
-    background:white; 
-    overflow:hidden; 
-    min-height:100vh;
-  }
-  @media(min-width:540px){
-    .wrapper{ margin:12px; border-radius:28px; min-height:auto; box-shadow:0 10px 30px rgba(100,120,140,0.08); border:1px solid #eef1f5; }
-  }
+  *{box-sizing:border-box}
+  body{ margin:0; background:#f7f3ef; font-family:'Cormorant Garamond', serif; display:flex; justify-content:center; padding:12px; }
+  .wrapper{ width:100%; max-width:520px; background:white; border-radius:clamp(16px, 4vw, 28px); overflow:hidden; box-shadow:0 10px 30px rgba(100,120,140,0.08); border:1px solid #eef1f5; }
+  .video-wrap{ position:relative; width:100%; aspect-ratio: 9 / 11.5; max-height: 70vh; min-height: 420px; background:white; overflow:hidden; display:block; }
+  .video-wrap video{ width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+
+  /* DECREASED FADING - LIGHT ONLY */
+  .fade-top, .fade-bottom, .fade-left, .fade-right{ position:absolute; pointer-events:none; z-index:2; }
+  .fade-top{ top:0; left:0; right:0; height:12%; background:linear-gradient(to bottom, white 0%, rgba(255,255,255,0.6) 50%, transparent 100%); }
+  .fade-left{ top:0; bottom:0; left:0; width:8%; background:linear-gradient(to right, white 0%, transparent 100%); }
+  .fade-right{ top:0; bottom:0; right:0; width:8%; background:linear-gradient(to left, white 0%, transparent 100%); }
+  .fade-bottom{ bottom:0; left:0; right:0; height:18%; background:linear-gradient(to top, white 0%, rgba(255,255,255,0.85) 30%, transparent 100%); }
   
-  /* VIDEO FITS INVITATION - NO LINE EDGE - RESPONSIVE */
-  .video-wrap{ 
-    position:relative; 
-    width:100%; 
-    aspect-ratio: 4 / 3; 
-    background:#fff; 
-    overflow:hidden; 
-    line-height:0;
-  }
-  .video-wrap video{ 
-    width:100%; 
-    height:100%; 
-    object-fit:cover; 
-    object-position:center top; 
-    display:block; 
-    border:none; 
-    outline:none;
-    vertical-align:top;
-  }
-  
-  .sound-btn{ position:absolute; bottom:10px; right:10px; z-index:5; background:rgba(122,160,184,0.9); backdrop-filter:blur(4px); border:none; border-radius:20px; padding:7px 12px; font-size:10px; font-weight:700; color:white; cursor:pointer; }
-  .content{ padding:18px 22px 28px; text-align:center; }
-  .dove{ font-size:24px; }
-  .cross{ color:#cbb989; font-size:18px; margin-top:4px; }
-  .name{ font-family:'Great Vibes', cursive; font-size:clamp(48px, 13vw, 68px); color:#7aa0b8; line-height:1; margin:4px 0; }
-  .desc{ color:#5a6d7e; font-size:15px; line-height:1.5; margin:8px 0; }
-  .event-box{ background:#f9fbfc; border-radius:14px; padding:12px; margin:14px 0; border:1px dashed #d7e3ea; color:#3f5464; font-size:13px; line-height:1.5; }
-  .rsvp-section{ text-align:left; margin-top:18px; padding-top:16px; border-top:1px solid #eef2f6; }
+  .sound-btn{ position:absolute; bottom:14px; right:14px; z-index:10; background:#7aa0b8; border:none; border-radius:20px; padding:8px 14px; font-size:11px; font-weight:700; color:white; cursor:pointer; }
+  .video-label{ position:relative; z-index:4; text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:10px 0 4px; background:white; }
+  .content{ padding:clamp(8px, 2.5vw, 16px) clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center; background:white; }
+  .dove{ font-size:clamp(22px, 5vw, 28px); }
+  .cross{ color:#cbb989; font-size:clamp(16px, 4vw, 20px); }
+  .name{ font-family:'Great Vibes', cursive; font-size:clamp(52px, 14vw, 72px); color:#7aa0b8; margin:2px 0; line-height:1; }
+  .desc{ color:#5a6d7e; font-size:clamp(14px, 3.5vw, 16px); line-height:1.5; margin:6px 0; }
+  .event-box{ background:#f9fbfc; border-radius:14px; padding:12px; margin:12px 0; border:1px dashed #d7e3ea; color:#3f5464; font-size:clamp(12px, 3.2vw, 14px); line-height:1.5; }
+  .rsvp-section{ text-align:left; margin-top:16px; padding-top:14px; border-top:1px solid #eef2f6; }
   .rsvp-section h3{ text-align:center; letter-spacing:3px; color:#b89f6a; margin:0 0 10px; font-size:11px; }
-  .rsvp-section input, .rsvp-section select, .rsvp-section textarea{ width:100%; padding:12px; margin:6px 0; border:1.5px solid #dde7ec; border-radius:11px; font-family:inherit; font-size:16px; background:#fdfeff; }
-  .rsvp-section input:disabled{ background:#f1f3f5; color:#a0aab3; }
-  .btn{ width:100%; margin-top:12px; padding:13px; background:#7aa0b8; color:white; border:none; border-radius:30px; font-size:13px; letter-spacing:2px; font-weight:600; cursor:pointer; }
-  #status{ text-align:center; margin-top:10px; color:#7aa0b8; font-weight:600; font-size:13px; }
-  .error-msg{ color:#d66; font-size:12px; margin:2px 0 4px 4px; display:none; }
-  .video-label{ text-align:center; letter-spacing:3px; color:#b89f6a; font-size:11px; font-weight:700; padding:14px 0 0; }
+  .rsvp-section input, .rsvp-section select, .rsvp-section textarea{ width:100%; padding:11px 12px; margin:5px 0; border:1.5px solid #dde7ec; border-radius:11px; font-family:inherit; font-size:16px; background:#fdfeff; }
+  .rsvp-section input:disabled{ background:#f1f3f5; color:#a0aab3; cursor:not-allowed; }
+  .btn{ width:100%; margin-top:10px; padding:12px; background:#7aa0b8; color:white; border:none; border-radius:30px; font-size:13px; letter-spacing:2px; font-weight:600; cursor:pointer; }
+  #status{ text-align:center; margin-top:8px; color:#7aa0b8; font-weight:600; font-size:13px; }
+  .error-msg{ color:#d66; font-size:12px; margin:0 0 4px 4px; display:none; }
 </style>
 </head>
 <body>
@@ -65,6 +46,10 @@
     <audio id="bgAudio" loop preload="auto">
       <source src="https://cdn.pixabay.com/audio/2022/02/07/audio_2a0d0e4e92.mp3" type="audio/mpeg">
     </audio>
+    <div class="fade-top"></div>
+    <div class="fade-left"></div>
+    <div class="fade-right"></div>
+    <div class="fade-bottom"></div>
     <button class="sound-btn" id="soundBtn">🔇 TAP FOR SOUND</button>
   </div>
   <div class="video-label">CHRISTENING INVITATION</div>
