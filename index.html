@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>John Shiloh Beatus's Christening</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👶</text></svg>">
+<link rel="icon" href="data:image/svg+xml,[STRIPPED]">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box}
@@ -17,14 +17,6 @@
   .fade-bottom{ bottom:0; left:0; right:0; height:18%; background:linear-gradient(to top, white 30%, transparent); }
   .fade-left{ top:0; bottom:0; left:0; width:18%; background:linear-gradient(to right, white 35%, transparent); }
   .fade-right{ top:0; bottom:0; right:0; width:18%; background:linear-gradient(to left, white 35%, transparent); }
-  /* SOUND BUTTON */
-  .sound-btn{
-    position:absolute; bottom:16px; right:16px; z-index:5;
-    background:rgba(255,255,255,0.9); border:1px solid #dde7ec;
-    border-radius:20px; padding:6px 12px;
-    font-size:12px; font-weight:700; letter-spacing:1px;
-    color:#7aa0b8; cursor:pointer; backdrop-filter: blur(4px);
-  }
   .video-label{ text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:8px 0 4px; }
   .content{ padding:clamp(8px, 2.5vw, 16px) clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center; }
   .dove{ font-size:clamp(22px, 5vw, 28px); }
@@ -34,25 +26,23 @@
   .event-box{ background:#f9fbfc; border-radius:14px; padding:12px; margin:12px 0; border:1px dashed #d7e3ea; color:#3f5464; font-size:clamp(12px, 3.2vw, 14px); line-height:1.5; }
   .rsvp-section{ text-align:left; margin-top:16px; padding-top:14px; border-top:1px solid #eef2f6; }
   .rsvp-section h3{ text-align:center; letter-spacing:3px; color:#b89f6a; margin:0 0 10px; font-size:11px; }
-  .rsvp-section input, .rsvp-section select, .rsvp-section textarea{ width:100%; padding:11px 12px; margin:5px 0; border:1.5px solid #dde7ec; border-radius:11px; font-family:inherit; font-size:16px; background:#fdfeff; transition: all 0.2s; }
-  .rsvp-section input:disabled{ background:#f1f3f5; color:#a0aab3; cursor:not-allowed; border-color:#e2e6ea; }
-  .rsvp-section input:invalid{ border-color:#e9a6a6; }
+  .rsvp-section input, .rsvp-section select, .rsvp-section textarea{ width:100%; padding:11px 12px; margin:5px 0; border:1.5px solid #dde7ec; border-radius:11px; font-family:inherit; font-size:16px; background:#fdfeff; }
+  .rsvp-section input:disabled{ background:#f1f3f5; color:#a0aab3; cursor:not-allowed; }
   .btn{ width:100%; margin-top:10px; padding:12px; background:#7aa0b8; color:white; border:none; border-radius:30px; font-size:13px; letter-spacing:2px; font-weight:600; cursor:pointer; }
   #status{ text-align:center; margin-top:8px; color:#7aa0b8; font-weight:600; font-size:13px; }
-  .error-msg{ color:#d66; font-size:12px; text-align:left; margin:-2px 0 4px 4px; display:none; }
+  .error-msg{ color:#d66; font-size:12px; margin:0 0 4px 4px; display:none; }
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div class="video-wrap">
-    <video autoplay muted loop playsinline preload="auto" id="heroVideo">
+    <video autoplay loop playsinline preload="auto" id="heroVideo">
       <source src="Sample1.mp4" type="video/mp4">
     </video>
     <div class="fade-top"></div>
     <div class="fade-bottom"></div>
     <div class="fade-left"></div>
     <div class="fade-right"></div>
-    <button class="sound-btn" id="soundBtn">🔇 TAP FOR SOUND</button>
   </div>
   <div class="video-label">CHRISTENING INVITATION</div>
   <div class="content">
@@ -70,7 +60,7 @@
       <h3>PLEASE RESPOND</h3>
       <form id="rsvpForm" novalidate>
         <input type="text" id="name" placeholder="Your Full Name *" required minlength="2">
-        <div class="error-msg" id="nameError">Please enter your full name</div>
+        <div class="error-msg" id="nameError">Please enter your full name *</div>
         <select id="attending" required>
           <option value="" disabled selected>Will you attend? *</option>
           <option value="Yes, Joyfully Attend">Yes, Joyfully Attend</option>
@@ -87,70 +77,65 @@
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn1tFi6g8XqcPi1hJ6SrAenyEqlbrwRRubP0aEzojkyT9tCMO8hxyWB68_8p51tXaT/exec";
   const video = document.getElementById("heroVideo");
-  const soundBtn = document.getElementById("soundBtn");
 
-  function tryPlay(){ if(video){ video.muted=true; video.play().catch(()=>{}); } }
-  document.addEventListener("DOMContentLoaded", tryPlay);
-  window.addEventListener("load", tryPlay);
-  
-  // SOUND TOGGLE
-  soundBtn.addEventListener("click", () => {
-    if(video.muted){
+  // TRY AUTOPLAY WITH SOUND
+  async function autoplayWithSound(){
+    try{
       video.muted = false;
       video.volume = 1;
-      video.play();
-      soundBtn.textContent = "🔊 SOUND ON";
-    } else {
+      await video.play();
+      console.log("Autoplay with sound success");
+    } catch(e){
+      console.log("Sound blocked, will unmute on first interaction");
+      // fallback: play muted first, then unmute on interaction
       video.muted = true;
-      soundBtn.textContent = "🔇 TAP FOR SOUND";
+      video.play().catch(()=>{});
+      
+      const unmuteOnInteraction = () => {
+        video.muted = false;
+        video.volume = 1;
+        video.play();
+        document.removeEventListener('touchstart', unmuteOnInteraction);
+        document.removeEventListener('click', unmuteOnInteraction);
+        document.removeEventListener('scroll', unmuteOnInteraction);
+      };
+      document.addEventListener('touchstart', unmuteOnInteraction, {once:true});
+      document.addEventListener('click', unmuteOnInteraction, {once:true});
+      document.addEventListener('scroll', unmuteOnInteraction, {once:true});
     }
-  });
+  }
 
+  document.addEventListener("DOMContentLoaded", autoplayWithSound);
+  window.addEventListener("load", autoplayWithSound);
+
+  // Form logic
   const attendingSelect = document.getElementById("attending");
   const guestsInput = document.getElementById("guests");
+  const nameInput = document.getElementById("name");
+  const nameError = document.getElementById("nameError");
+
   attendingSelect.addEventListener("change", () => {
     if(attendingSelect.value === "Sorry, Can't Attend"){
       guestsInput.value = ""; guestsInput.disabled = true; guestsInput.placeholder = "Not needed";
     } else { guestsInput.disabled = false; guestsInput.placeholder = "Number of Guests"; }
   });
 
-  // REQUIRED FULL NAME VALIDATION
-  const nameInput = document.getElementById("name");
-  const nameError = document.getElementById("nameError");
-
   document.getElementById("rsvpForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    
-    // Validate full name
     const fullName = nameInput.value.trim();
     if(fullName.length < 2){
       nameError.style.display = "block";
-      nameInput.style.borderColor = "#e9a6a6";
       nameInput.focus();
       return;
-    } else {
-      nameError.style.display = "none";
-      nameInput.style.borderColor = "#dde7ec";
     }
-
-    if(!attendingSelect.value){
-      document.getElementById("status").innerText = "Please select if you will attend";
-      return;
-    }
-
+    nameError.style.display = "none";
+    if(!attendingSelect.value){ document.getElementById("status").innerText = "Please select if you will attend *"; return; }
+    
     document.getElementById("status").innerText = "Sending...";
     const data = { name: fullName, attending: attendingSelect.value, guests: guestsInput.value || "0", message: document.getElementById("message").value };
     await fetch(SCRIPT_URL, { method:"POST", mode:"no-cors", body:JSON.stringify(data) });
     document.getElementById("status").innerText = "Thank you! RSVP saved ♡";
-    e.target.reset(); guestsInput.disabled = false; guestsInput.placeholder = "Number of Guests";
-    soundBtn.textContent = "🔇 TAP FOR SOUND";
-  });
-
-  nameInput.addEventListener("input", () => {
-    if(nameInput.value.trim().length >= 2){
-      nameError.style.display = "none";
-      nameInput.style.borderColor = "#dde7ec";
-    }
+    e.target.reset(); guestsInput.disabled = false;
   });
 </script>
 </body>
