@@ -11,19 +11,27 @@
   body{ margin:0; background:#f7f3ef; font-family:'Cormorant Garamond', serif; display:flex; justify-content:center; padding:12px; }
   .wrapper{ width:100%; max-width:520px; background:white; border-radius:clamp(16px, 4vw, 28px); overflow:hidden; box-shadow:0 10px 30px rgba(100,120,140,0.08); border:1px solid #eef1f5; }
   
-  /* 4:3 RATIO */
-  .video-wrap{ position:relative; width:100%; aspect-ratio: 4 / 3; background:white; overflow:hidden; display:block; }
-  .video-wrap video{ width:100%; height:100%; object-fit:cover; object-position:center center; display:block; }
+  /* 4:3 BUT WHOLE VIDEO VISIBLE - MOVED UP */
+  .video-wrap{ position:relative; width:100%; aspect-ratio: 4 / 3; background:white; overflow:hidden; display:flex; align-items:flex-start; justify-content:center; }
+  .video-wrap video{ 
+    width:100%; 
+    height:100%; 
+    object-fit:contain; 
+    object-position:center top; 
+    display:block; 
+    background:white;
+    transform: translateY(-8%); /* MOVE UP */
+  }
 
   .fade-top, .fade-bottom, .fade-left, .fade-right{ position:absolute; pointer-events:none; z-index:2; }
-  .fade-top{ top:0; left:0; right:0; height:12%; background:linear-gradient(to bottom, white, transparent); }
-  .fade-left{ top:0; bottom:0; left:0; width:8%; background:linear-gradient(to right, white, transparent); }
-  .fade-right{ top:0; bottom:0; right:0; width:8%; background:linear-gradient(to left, white, transparent); }
-  .fade-bottom{ bottom:0; left:0; right:0; height:15%; background:linear-gradient(to top, white, transparent); }
+  .fade-top{ top:0; left:0; right:0; height:6%; background:linear-gradient(to bottom, white, transparent); }
+  .fade-left{ top:0; bottom:0; left:0; width:5%; background:linear-gradient(to right, white, transparent); }
+  .fade-right{ top:0; bottom:0; right:0; width:5%; background:linear-gradient(to left, white, transparent); }
+  .fade-bottom{ bottom:0; left:0; right:0; height:8%; background:linear-gradient(to top, white, transparent); }
   
-  .sound-btn{ position:absolute; bottom:14px; right:14px; z-index:10; background:#7aa0b8; border:none; border-radius:20px; padding:8px 14px; font-size:11px; font-weight:700; color:white; cursor:pointer; }
-  .video-label{ text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:12px 0 4px; background:white; }
-  .content{ padding:8px clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center; background:white; }
+  .sound-btn{ position:absolute; bottom:8px; right:10px; z-index:10; background:#7aa0b8; border:none; border-radius:20px; padding:6px 12px; font-size:10px; font-weight:700; color:white; cursor:pointer; }
+  .video-label{ text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:8px 0 4px; background:white; }
+  .content{ padding:4px clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center; background:white; }
   .dove{ font-size:clamp(22px, 5vw, 28px); }
   .cross{ color:#cbb989; font-size:clamp(16px, 4vw, 20px); }
   .name{ font-family:'Great Vibes', cursive; font-size:clamp(52px, 14vw, 72px); color:#7aa0b8; margin:2px 0; line-height:1; }
@@ -51,7 +59,7 @@
     <div class="fade-left"></div>
     <div class="fade-right"></div>
     <div class="fade-bottom"></div>
-    <button class="sound-btn" id="soundBtn">🔇 TAP FOR SOUND</button>
+    <button class="sound-btn" id="soundBtn">🔇 TAP</button>
   </div>
   <div class="video-label">CHRISTENING INVITATION</div>
   <div class="content">
@@ -90,8 +98,8 @@
   let isSoundOn = false;
   video.muted = true; video.play().catch(()=>{});
   audio.volume = 0.7;
-  function enableSound(){ video.muted = false; video.volume = 1; audio.volume = 0.7; audio.play().then(()=>{ video.play(); soundBtn.textContent = "🔊 SOUND ON"; isSoundOn = true; }).catch(()=>{}); }
-  function disableSound(){ video.muted = true; audio.pause(); soundBtn.textContent = "🔇 TAP FOR SOUND"; isSoundOn = false; }
+  function enableSound(){ video.muted = false; video.volume = 1; audio.volume = 0.7; audio.play().then(()=>{ video.play(); soundBtn.textContent = "🔊"; isSoundOn = true; }).catch(()=>{}); }
+  function disableSound(){ video.muted = true; audio.pause(); soundBtn.textContent = "🔇 TAP"; isSoundOn = false; }
   soundBtn.addEventListener("click", (e)=>{ e.stopPropagation(); if(isSoundOn) disableSound(); else enableSound(); });
   document.body.addEventListener("click", ()=>{ if(!isSoundOn) enableSound(); }, {once:true});
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn1tFi6g8XqcPi1hJ6SrAenyEqlbrwRRubP0aEzojkyT9tCMO8hxyWB68_8p51tXaT/exec";
