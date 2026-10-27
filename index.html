@@ -7,115 +7,175 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52%25' x='50%25' dominant-baseline='middle' text-anchor='middle' font-size='48'%3E🕊%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box}
-  body{ margin:0; background:#f7f3ef; font-family:'Cormorant Garamond', serif; display:flex; justify-content:center; padding:12px; }
-  .wrapper{ width:100%; max-width:520px; background:white; border-radius:clamp(16px, 4vw, 28px); overflow:hidden; box-shadow:0 10px 30px rgba(100,120,140,0.08); border:1px solid #eef1f5; }
-  
-  /* FIT TO SIDE - REDUCED FADE */
-  .video-wrap{ position:relative; width:100%; aspect-ratio: 9 / 12; max-height: 70vh; min-height: 420px; background:white; overflow:hidden; display:block; }
-  .video-wrap video{ width:100%; height:100%; object-fit:cover; object-position:center top; display:block; background:white; border:none; }
+*{box-sizing:border-box}
+body{margin:0; background:#f7f3ef; font-family:'Cormorant Garamond', serif; display:flex; justify-content:center; padding:12px;}
+.wrapper{width:100%; max-width:520px; background:white; border-radius:clamp(16px, 4vw, 28px); overflow:hidden; box-shadow:0 10px 30px rgba(100,120,140,0.08); border:1px solid #eef1f5;}
+.video-wrap{position:relative; width:100%; aspect-ratio: 9 / 12; max-height: 70vh; min-height: 420px; background:white; overflow:hidden; display:block;}
+.video-wrap video{width:100%; height:100%; object-fit:cover; object-position:center top; display:block; background:white; border:none;}
+.fade-top, .fade-bottom, .fade-left, .fade-right{position:absolute; pointer-events:none; z-index:2;}
+.fade-top{top:0; left:0; right:0; height:14%; background:linear-gradient(to bottom, white 0%, rgba(255,255,255,0.7) 50%, transparent 100%);}
+.fade-bottom{bottom:0; left:0; right:0; height:12%; background:linear-gradient(to top, white 0%, transparent 100%);}
+.fade-left{top:0; bottom:0; left:0; width:8%; background:linear-gradient(to right, white 0%, transparent 100%);}
+.fade-right{top:0; bottom:0; right:0; width:8%; background:linear-gradient(to left, white 0%, transparent 100%);}
+.sound-btn{position:absolute; bottom:14px; right:14px; z-index:10; background:#7aa0b8; border:none; border-radius:20px; padding:8px 14px; font-size:11px; font-weight:700; color:white; cursor:pointer;}
+.video-label{text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:8px 0 4px;}
+.content{padding:clamp(8px, 2.5vw, 16px) clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center;}
+.dove{font-size:clamp(22px, 5vw, 28px);} .cross{color:#cbb989; font-size:clamp(16px, 4vw, 20px);}
+.name{font-family:'Great Vibes', cursive; font-size:clamp(52px, 14vw, 72px); color:#7aa0b8; margin:2px 0; line-height:1;}
+.desc{color:#5a6d7e; font-size:clamp(14px, 3.5vw, 16px); line-height:1.5; margin:6px 0;}
+.event-box{background:#f9fbfc; border-radius:14px; padding:12px; margin:12px 0; border:1px dashed #d7e3ea; color:#3f5464; font-size:clamp(12px, 3.2vw, 14px); line-height:1.5;}
+.rsvp-section{text-align:left; margin-top:16px; padding-top:14px; border-top:1px solid #eef2f6;}
+.rsvp-section h3{text-align:center; letter-spacing:3px; color:#b89f6a; margin:0 0 10px; font-size:11px;}
+.rsvp-section input, .rsvp-section select, .rsvp-section textarea{width:100%; padding:11px 12px; margin:5px 0; border:1.5px solid #dde7ec; border-radius:11px; font-family:inherit; font-size:16px; background:#fdfeff;}
+.rsvp-section input:disabled{background:#f1f3f5; color:#a0aab3; cursor:not-allowed;}
+.btn{width:100%; margin-top:10px; padding:12px; background:#7aa0b8; color:white; border:none; border-radius:30px; font-size:13px; letter-spacing:2px; font-weight:600; cursor:pointer;}
+#status{text-align:center; margin-top:8px; color:#7aa0b8; font-weight:600; font-size:13px;}
+.error-msg{color:#d66; font-size:12px; margin:0 0 4px 4px; display:none;}
 
-  .fade-top, .fade-bottom, .fade-left, .fade-right{ position:absolute; pointer-events:none; z-index:2; }
-  /* REDUCED FADING */
-  .fade-top{ top:0; left:0; right:0; height:14%; background:linear-gradient(to bottom, white 0%, rgba(255,255,255,0.7) 50%, transparent 100%); }
-  .fade-bottom{ bottom:0; left:0; right:0; height:12%; background:linear-gradient(to top, white 0%, transparent 100%); }
-  .fade-left{ top:0; bottom:0; left:0; width:8%; background:linear-gradient(to right, white 0%, transparent 100%); }
-  .fade-right{ top:0; bottom:0; right:0; width:8%; background:linear-gradient(to left, white 0%, transparent 100%); }
-
-  .sound-btn{ position:absolute; bottom:14px; right:14px; z-index:10; background:#7aa0b8; border:none; border-radius:20px; padding:8px 14px; font-size:11px; font-weight:700; color:white; cursor:pointer; }
-  .video-label{ text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:8px 0 4px; }
-  .content{ padding:clamp(8px, 2.5vw, 16px) clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center; }
-  .dove{ font-size:clamp(22px, 5vw, 28px); }
-  .cross{ color:#cbb989; font-size:clamp(16px, 4vw, 20px); }
-  .name{ font-family:'Great Vibes', cursive; font-size:clamp(52px, 14vw, 72px); color:#7aa0b8; margin:2px 0; line-height:1; }
-  .desc{ color:#5a6d7e; font-size:clamp(14px, 3.5vw, 16px); line-height:1.5; margin:6px 0; }
-  .event-box{ background:#f9fbfc; border-radius:14px; padding:12px; margin:12px 0; border:1px dashed #d7e3ea; color:#3f5464; font-size:clamp(12px, 3.2vw, 14px); line-height:1.5; }
-  .rsvp-section{ text-align:left; margin-top:16px; padding-top:14px; border-top:1px solid #eef2f6; }
-  .rsvp-section h3{ text-align:center; letter-spacing:3px; color:#b89f6a; margin:0 0 10px; font-size:11px; }
-  .rsvp-section input, .rsvp-section select, .rsvp-section textarea{ width:100%; padding:11px 12px; margin:5px 0; border:1.5px solid #dde7ec; border-radius:11px; font-family:inherit; font-size:16px; background:#fdfeff; }
-  .rsvp-section input:disabled{ background:#f1f3f5; color:#a0aab3; cursor:not-allowed; }
-  .btn{ width:100%; margin-top:10px; padding:12px; background:#7aa0b8; color:white; border:none; border-radius:30px; font-size:13px; letter-spacing:2px; font-weight:600; cursor:pointer; }
-  #status{ text-align:center; margin-top:8px; color:#7aa0b8; font-weight:600; font-size:13px; }
-  .error-msg{ color:#d66; font-size:12px; margin:0 0 4px 4px; display:none; }
+/* NEW: THANK YOU POPUP */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(60,80,95,0.55); backdrop-filter:blur(6px);
+  z-index:9999; display:none; justify-content:center; align-items:center; padding:16px;
+}
+.modal-overlay.active{display:flex; animation:fadeIn 0.3s ease;}
+.modal-box{
+  background:white; width:100%; max-width:440px; border-radius:24px; overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.2); text-align:center;
+  animation:popUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.modal-video-wrap{position:relative; width:100%; aspect-ratio:9/12; max-height:58vh; background:#000;}
+.modal-video-wrap video{width:100%; height:100%; object-fit:cover; display:block;}
+.modal-content{padding:18px 20px 22px;}
+.modal-name{font-family:'Great Vibes', cursive; font-size:42px; color:#7aa0b8; line-height:1;}
+.modal-title{letter-spacing:3px; color:#b89f6a; font-size:11px; font-weight:700; margin:4px 0 8px;}
+.modal-text{color:#5a6d7e; font-size:15px; line-height:1.5;}
+.modal-close{margin-top:14px; width:100%; padding:12px; background:#7aa0b8; color:white; border:none; border-radius:30px; font-size:12px; letter-spacing:2px; font-weight:700; cursor:pointer;}
+@keyframes fadeIn{from{opacity:0} to{opacity:1}}
+@keyframes popUp{from{transform:scale(0.85) translateY(20px); opacity:0} to{transform:scale(1) translateY(0); opacity:1}}
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div class="video-wrap">
-    <video autoplay muted loop playsinline preload="auto" id="heroVideo">
-      <source src="Sample1.mp4" type="video/mp4">
-    </video>
-    <audio id="bgAudio" loop preload="auto" crossorigin="anonymous">
-      <source src="https://cdn.pixabay.com/audio/2022/02/07/audio_2a0d0e4e92.mp3" type="audio/mpeg">
-    </audio>
-    <div class="fade-top"></div>
-    <div class="fade-bottom"></div>
-    <div class="fade-left"></div>
-    <div class="fade-right"></div>
+    <video autoplay muted loop playsinline preload="auto" id="heroVideo"><source src="Invitation.mp4" type="video/mp4"></video>
+    <audio id="bgAudio" loop preload="auto" crossorigin="anonymous"><source src="https://cdn.pixabay.com/audio/2022/02/07/audio_2a0d0e4e92.mp3" type="audio/mpeg"></audio>
+    <div class="fade-top"></div><div class="fade-bottom"></div><div class="fade-left"></div><div class="fade-right"></div>
     <button class="sound-btn" id="soundBtn">🔇 CLICK FOR SOUND</button>
   </div>
   <div class="video-label">CHRISTENING INVITATION</div>
   <div class="content">
-    <div class="dove">🕊</div>
-    <div class="cross">†</div>
+    <div class="dove">🕊</div><div class="cross">†</div>
     <div class="name">Shiloh</div>
     <div style="letter-spacing:3px; color:#b89f6a; font-size:11px; font-weight:600;">IS BEING CHRISTENED</div>
     <div class="desc">Join us as we celebrate the baptism of our baby boy</div>
-    <div class="event-box">
-      <b>Sunday • November 22, 2026 • 10:30 AM</b><br>
-      St. Andrew Parish the Apostle Church<br>
-      Reception: 1:00 PM - Amaluz Pavilion
-    </div>
+    <div class="event-box"><b>Sunday • November 22, 2026 • 11:00 AM</b><br>St. Andrew Parish the Apostle Church<br>Reception: 12:00 NN - Amaluz Pavilion</div>
     <div class="rsvp-section">
       <h3>PLEASE RESPOND</h3>
       <form id="rsvpForm" novalidate>
         <input type="text" id="name" placeholder="Your Full Name *" required minlength="2">
         <div class="error-msg" id="nameError">Please enter your full name *</div>
-        <select id="attending" required>
-          <option value="" disabled selected>Will you attend? *</option>
-          <option value="Yes, Joyfully Attend">Yes, Joyfully Attend</option>
-          <option value="Sorry, Can't Attend">Sorry, Can't Attend</option>
-        </select>
+        <select id="attending" required><option value="" disabled selected>Will you attend? *</option><option value="Yes, Joyfully Attend">Yes, Joyfully Attend</option><option value="Sorry, Can't Attend">Sorry, Can't Attend</option></select>
         <input type="number" id="guests" placeholder="Number of Guests" inputmode="numeric">
         <textarea id="message" rows="2" placeholder="Message or Prayer for Shiloh"></textarea>
-        <button class="btn" type="submit">SEND RSVP</button>
+        <button class="btn" type="submit" id="submitBtn">SEND RSVP</button>
       </form>
       <div id="status"></div>
     </div>
   </div>
 </div>
+
+<!-- THANK YOU MODAL WITH SECOND VIDEO -->
+<div class="modal-overlay" id="thankYouModal">
+  <div class="modal-box">
+    <div class="modal-video-wrap">
+      <video autoplay muted loop playsinline id="thankYouVideo">
+        <source src="Thankyou.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="modal-content">
+      <div class="dove">🕊</div>
+      <div class="modal-name">Thank you!</div>
+      <div class="modal-title">RSVP RECEIVED</div>
+      <div class="modal-text">Your response means so much to us. We can't wait to celebrate Shiloh's special day with you. God bless you! ♡</div>
+      <button class="modal-close" id="closeModalBtn">CLOSE WITH LOVE</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  const video = document.getElementById("heroVideo");
-  const audio = document.getElementById("bgAudio");
-  const soundBtn = document.getElementById("soundBtn");
-  let isSoundOn = false;
-  video.muted = true; video.play().catch(()=>{});
-  audio.volume = 0.7;
-  function enableSound(){ video.muted = false; video.volume = 1; audio.volume = 0.7; audio.play().then(()=>{ video.play(); soundBtn.textContent = "🔊 SOUND ON"; isSoundOn = true; }).catch(()=>{ audio.play(); }); }
-  function disableSound(){ video.muted = true; audio.pause(); soundBtn.textContent = "🔇 CLICK FOR SOUND"; isSoundOn = false; }
-  soundBtn.addEventListener("click", (e)=>{ e.stopPropagation(); if(isSoundOn) disableSound(); else enableSound(); });
-  document.body.addEventListener("click", ()=>{ if(!isSoundOn) enableSound(); }, {once:true});
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn1tFi6g8XqcPi1hJ6SrAenyEqlbrwRRubP0aEzojkyT9tCMO8hxyWB68_8p51tXaT/exec";
-  const attendingSelect = document.getElementById("attending");
-  const guestsInput = document.getElementById("guests");
-  const nameInput = document.getElementById("name");
-  const nameError = document.getElementById("nameError");
-  attendingSelect.addEventListener("change", () => {
-    if(attendingSelect.value === "Sorry, Can't Attend"){ guestsInput.value = ""; guestsInput.disabled = true; guestsInput.placeholder = "Not needed"; }
-    else { guestsInput.disabled = false; guestsInput.placeholder = "Number of Guests"; }
-  });
-  document.getElementById("rsvpForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const fullName = nameInput.value.trim();
-    if(fullName.length < 2){ nameError.style.display = "block"; nameInput.focus(); return; }
-    nameError.style.display = "none";
-    if(!attendingSelect.value){ document.getElementById("status").innerText = "Please select if you will attend *"; return; }
-    document.getElementById("status").innerText = "Sending...";
-    const data = { name: fullName, attending: attendingSelect.value, guests: guestsInput.value || "0", message: document.getElementById("message").value };
+const video = document.getElementById("heroVideo");
+const audio = document.getElementById("bgAudio");
+const soundBtn = document.getElementById("soundBtn");
+let isSoundOn = false;
+video.muted = true; video.play().catch(()=>{}); audio.volume = 0.7;
+function enableSound(){
+  video.muted = false; video.volume = 1; audio.volume = 0.7;
+  audio.play().then(()=>{ video.play(); soundBtn.textContent = "🔊 SOUND ON"; isSoundOn = true; }).catch(()=>{ audio.play(); });
+}
+function disableSound(){
+  video.muted = true; audio.pause(); soundBtn.textContent = "🔇 CLICK FOR SOUND"; isSoundOn = false;
+}
+soundBtn.addEventListener("click", (e)=>{ e.stopPropagation(); if(isSoundOn) disableSound(); else enableSound(); });
+document.body.addEventListener("click", ()=>{ if(!isSoundOn) enableSound(); }, {once:true});
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn1tFi6g8XqcPi1hJ6SrAenyEqlbrwRRubP0aEzojkyT9tCMO8hxyWB68_8p51tXaT/exec";
+const attendingSelect = document.getElementById("attending");
+const guestsInput = document.getElementById("guests");
+const nameInput = document.getElementById("name");
+const nameError = document.getElementById("nameError");
+const thankYouModal = document.getElementById("thankYouModal");
+const thankYouVideo = document.getElementById("thankYouVideo");
+const closeModalBtn = document.getElementById("closeModalBtn");
+const submitBtn = document.getElementById("submitBtn");
+
+attendingSelect.addEventListener("change", () => {
+  if(attendingSelect.value === "Sorry, Can't Attend"){
+    guestsInput.value = ""; guestsInput.disabled = true; guestsInput.placeholder = "Not needed";
+  } else {
+    guestsInput.disabled = false; guestsInput.placeholder = "Number of Guests";
+  }
+});
+
+function openThankYou(){
+  thankYouModal.classList.add("active");
+  thankYouVideo.muted = false;
+  thankYouVideo.volume = 1;
+  thankYouVideo.play().catch(()=>{ thankYouVideo.muted = true; thankYouVideo.play(); });
+  audio.pause();
+  video.muted = true;
+}
+function closeThankYou(){
+  thankYouModal.classList.remove("active");
+  thankYouVideo.pause();
+  if(isSoundOn){ audio.play(); video.muted = false; }
+}
+closeModalBtn.addEventListener("click", closeThankYou);
+thankYouModal.addEventListener("click", (e)=>{ if(e.target === thankYouModal) closeThankYou(); });
+
+document.getElementById("rsvpForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fullName = nameInput.value.trim();
+  if(fullName.length < 2){ nameError.style.display = "block"; nameInput.focus(); return; }
+  nameError.style.display = "none";
+  if(!attendingSelect.value){ document.getElementById("status").innerText = "Please select if you will attend *"; return; }
+
+  submitBtn.disabled = true;
+  submitBtn.innerText = "SENDING...";
+  document.getElementById("status").innerText = "Sending...";
+
+  const data = { name: fullName, attending: attendingSelect.value, guests: guestsInput.value || "0", message: document.getElementById("message").value };
+  try{
     await fetch(SCRIPT_URL, { method:"POST", mode:"no-cors", body:JSON.stringify(data) });
     document.getElementById("status").innerText = "Thank you! RSVP saved ♡";
     e.target.reset(); guestsInput.disabled = false;
-  });
+    openThankYou();
+  } catch(err){
+    document.getElementById("status").innerText = "Error sending, please try again.";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerText = "SEND RSVP";
+  }
+});
 </script>
 </body>
 </html>
