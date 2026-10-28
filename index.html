@@ -4,82 +4,107 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>John Shiloh Beatus's Christening</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52%25' x='50%25' dominant-baseline='middle' text-anchor='middle' font-size='48'%3E🕊%3C/text%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕊</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box} body{margin:0; background:#f7f3ef; font-family:'Cormorant Garamond', serif; display:flex; justify-content:center; padding:12px;}
-.wrapper{width:100%; max-width:520px; background:white; border-radius:clamp(16px, 4vw, 28px); overflow:hidden; box-shadow:0 10px 30px rgba(100,120,140,0.08); border:1px solid #eef1f5;}
-.video-wrap{position:relative; width:100%; aspect-ratio: 10 / 14; max-height: 70vh; min-height: 420px; background:white; overflow:hidden; display:block;}
-.video-wrap video{width:100%; height:100%; object-fit:cover; object-position:center top; display:block; background:white; border:none;}
-.fade-top, .fade-bottom, .fade-left, .fade-right{position:absolute; pointer-events:none; z-index:2;}
-.fade-top{top:0; left:0; right:0; height:5%; background:linear-gradient(to bottom, white 0%, rgba(255,255,255,0.7) 50%, transparent 100%);}
-.fade-bottom{bottom:0; left:0; right:0; height:5%; background:linear-gradient(to top, white 0%, transparent 100%);}
-.fade-left{top:0; bottom:0; left:0; width:8%; background:linear-gradient(to right, white 0%, transparent 100%);}
-.fade-right{top:0; bottom:0; right:0; width:8%; background:linear-gradient(to left, white 0%, transparent 100%);}
-.sound-btn{position:absolute; bottom:14px; right:14px; z-index:10; background:#7aa0b8; border:none; border-radius:20px; padding:8px 14px; font-size:11px; font-weight:700; color:white; cursor:pointer;}
-.video-label{text-align:center; letter-spacing:clamp(2px, 1vw, 4px); color:#b89f6a; font-size:clamp(10px, 2.5vw, 12px); font-weight:700; padding:8px 0 4px;}
-.content{padding:clamp(8px, 2.5vw, 16px) clamp(16px, 5vw, 30px) clamp(16px, 5vw, 25px); text-align:center;}
-.dove{font-size:clamp(22px, 5vw, 28px);} .cross{color:#cbb989; font-size:clamp(16px, 4vw, 20px);}
-.name{font-family:'Great Vibes', cursive; font-size:clamp(52px, 14vw, 72px); color:#7aa0b8; margin:2px 0; line-height:1;}
-.desc{color:#5a6d7e; font-size:clamp(14px, 3.5vw, 16px); line-height:1.5; margin:6px 0;}
-.event-box{background:#f9fbfc; border-radius:14px; padding:12px; margin:12px 0; border:1px dashed #d7e3ea; color:#3f5464; font-size:clamp(12px, 3.2vw, 14px); line-height:1.5;}
-.rsvp-section{text-align:left; margin-top:16px; padding-top:14px; border-top:1px solid #eef2f6;}
-.rsvp-section h3{text-align:center; letter-spacing:3px; color:#b89f6a; margin:0 0 10px; font-size:11px;}
-.rsvp-section input, .rsvp-section select, .rsvp-section textarea{width:100%; padding:11px 12px; margin:5px 0; border:1.5px solid #dde7ec; border-radius:11px; font-family:inherit; font-size:16px; background:#fdfeff;}
-.rsvp-section input:disabled{background:#f1f3f5; color:#a0aab3; cursor:not-allowed;}
-.btn{width:100%; margin-top:10px; padding:12px; background:#7aa0b8; color:white; border:none; border-radius:30px; font-size:13px; letter-spacing:2px; font-weight:600; cursor:pointer;}
-#status{text-align:center; margin-top:8px; color:#7aa0b8; font-weight:600; font-size:13px;}
-.error-msg{color:#d66; font-size:12px; margin:0 0 8px 4px; display:none;}
-/* THANK YOU POPUP - WIDER */
-.modal-overlay{ position:fixed; inset:0; background:rgba(60,80,95,0.55); backdrop-filter:blur(6px); z-index:9999; display:none; justify-content:center; align-items:center; padding:16px; }
-.modal-overlay.active{display:flex; animation:fadeIn 0.3s ease;}
-.modal-box{ background:white; width:100%; max-width:580px; border-radius:24px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.2); text-align:center; animation:popUp 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-.modal-video-wrap{position:relative; width:100%; aspect-ratio:6/8; max-height:78vh; background:#000;}
-.modal-video-wrap video{width:100%; height:100%; object-fit:cover; display:block;}
-.modal-content{padding:18px 20px 22px;}
-.modal-name{font-family:'Great Vibes', cursive; font-size:42px; color:#7aa0b8; line-height:1;}
-.modal-title{letter-spacing:3px; color:#b89f6a; font-size:11px; font-weight:700; margin:4px 0 8px;}
-.modal-text{color:#5a6d7e; font-size:15px; line-height:1.5;}
-.modal-close{margin-top:14px; width:100%; padding:12px; background:#7aa0b8; color:white; border:none; border-radius:30px; font-size:12px; letter-spacing:2px; font-weight:700; cursor:pointer;}
-@keyframes fadeIn{from{opacity:0} to{opacity:1}} 
-@keyframes popUp{from{transform:scale(0.85) translateY(20px); opacity:0} to{transform:scale(1) translateY(0); opacity:1}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f7f3ef;font-family:'Montserrat',sans-serif;overflow-x:hidden}
+.wrapper{max-width:480px;margin:0 auto;background:#fff;min-height:100vh;position:relative;box-shadow:0 0 40px rgba(0,0,0,.08)}
+.hero{position:relative;height:100vh;overflow:hidden}
+.hero video{width:100%;height:100%;object-fit:cover}
+.sound-btn{position:absolute;top:20px;right:20px;z-index:10;background:rgba(255,255,255,.85);border:none;padding:10px 16px;border-radius:30px;font-size:12px;letter-spacing:1px;cursor:pointer;backdrop-filter:blur(10px);font-weight:500}
+.content{padding:50px 35px;text-align:center}
+.dove{font-size:28px;margin-bottom:10px}
+.name{font-family:'Great Vibes',cursive;font-size:58px;color:#7aa0b8;line-height:1.1}
+.title{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:5px;color:#5a6d7e;margin:15px 0 25px;font-weight:300}
+.details{font-family:'Cormorant Garamond',serif;font-size:16px;color:#6b7d8e;line-height:1.8;margin-bottom:40px}
+.rsvp-section{border-top:1px solid #eee8e0;padding-top:40px}
+.rsvp-title{font-family:'Cormorant Garamond',serif;font-size:24px;letter-spacing:3px;color:#5a6d7e;margin-bottom:25px}
+.form-group{margin-bottom:18px;text-align:left}
+.form-group label{font-size:11px;letter-spacing:1.5px;color:#9aa8b5;display:block;margin-bottom:8px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:14px 16px;border:1px solid #e8ddd2;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:14px;background:#fdfaf7;outline:none;transition:.3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#7aa0b8}
+.error{font-size:11px;color:#d66;margin-top:6px;display:none}
+.submit-btn{width:100%;padding:16px;background:#7aa0b8;color:#fff;border:none;border-radius:30px;letter-spacing:2px;font-size:13px;cursor:pointer;margin-top:10px;transition:.3s}
+.submit-btn:hover{background:#6a90a8}
+.submit-btn:disabled{opacity:.6}
+#status{text-align:center;margin-top:15px;font-size:13px;min-height:18px}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(247,243,239,.92);backdrop-filter:blur(12px);z-index:100;display:flex;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:.4s;padding:20px}
+.modal-overlay.active{opacity:1;pointer-events:auto}
+.modal-box{background:#fff;max-width:380px;width:100%;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.15);transform:translateY(20px);transition:.4s}
+.modal-overlay.active .modal-box{transform:translateY(0)}
+.modal-video-wrap{height:260px;overflow:hidden}
+.modal-video-wrap video{width:100%;height:100%;object-fit:cover}
+.modal-content{padding:30px 28px;text-align:center}
+.modal-name{font-family:'Great Vibes',cursive;font-size:42px;color:#7aa0b8}
+.modal-title{font-family:'Cormorant Garamond',serif;letter-spacing:3px;font-size:16px;color:#5a6d7e;margin:8px 0 15px}
+.modal-text{font-size:14px;color:#6b7d8e;line-height:1.7;margin-bottom:22px}
+.modal-close{width:100%;padding:14px;background:#7aa0b8;color:#fff;border:none;border-radius:30px;letter-spacing:2px;font-size:12px;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="wrapper">
-<div class="video-wrap">
-<video autoplay muted loop playsinline preload="auto" id="heroVideo"><source src="Invitation.mp4" type="video/mp4"></video>
-<audio id="bgAudio" loop preload="auto" crossorigin="anonymous"><source src="https://cdn.pixabay.com/audio/2022/02/07/audio_2a0d0e4e92.mp3" type="audio/mpeg"></audio>
-<div class="fade-top"></div><div class="fade-bottom"></div><div class="fade-left"></div><div class="fade-right"></div>
+<div class="hero">
+<video id="heroVideo" loop muted playsinline autoplay preload="auto">
+<source src="Invitation.mp4" type="video/mp4">
+</video>
 <button class="sound-btn" id="soundBtn">🔇 CLICK FOR SOUND</button>
+<audio id="bgAudio" loop preload="auto">
+<source src="background.mp3" type="audio/mpeg">
+</audio>
 </div>
-<div class="video-label">CHRISTENING INVITATION</div>
+
 <div class="content">
-<div class="dove">🕊</div><div class="cross">†</div>
-<div class="name">Shiloh</div>
-<div style="letter-spacing:3px; color:#b89f6a; font-size:11px; font-weight:600;">IS BEING CHRISTENED</div>
-<div class="desc">Join us as we celebrate the baptism of our baby boy</div>
-<div class="event-box"><b>Sunday • November 22, 2026 • 11:00 am</b><br>St. Andrew Parish the Apostle Church<br>Reception: 12:00 nn - Amaluz Pavilion</div>
+<div class="dove">🕊</div>
+<div class="name">John Shiloh Beatus</div>
+<div class="title">CHRISTENING</div>
+<div class="details">
+Join us as we celebrate<br>
+the baptism of our little blessing<br><br>
+<strong>Date & Time</strong><br>
+Your Date Here<br><br>
+<strong>Location</strong><br>
+Your Church / Venue Here
+</div>
+
 <div class="rsvp-section">
-<h3>PLEASE RESPOND</h3>
-<form id="rsvpForm" novalidate>
-<input type="text" id="name" placeholder="Your Full Name *" required minlength="2">
-<div class="error-msg" id="nameError">Please enter your full name *</div>
-<select id="attending" required><option value="" disabled selected>Will you attend? *</option><option value="Yes, Joyfully Attend">Yes, Joyfully Attend</option><option value="Sorry, Can't Attend">Sorry, Can't Attend</option></select>
-<div class="error-msg" id="attendingError">Please select if you will attend *</div>
-<input type="number" id="guests" placeholder="Number of Guests" inputmode="numeric">
-<textarea id="message" rows="2" placeholder="Message or Prayer for Shiloh"></textarea>
-<button class="btn" type="submit" id="submitBtn">SEND RSVP</button>
-</form>
+<div class="rsvp-title">RSVP</div>
+<form id="rsvpForm">
+<div class="form-group">
+<label>FULL NAME *</label>
+<input type="text" id="name" placeholder="Your full name">
+<div class="error" id="nameError">Please enter your name (min 2 characters) *</div>
+</div>
+<div class="form-group">
+<label>WILL YOU ATTEND? *</label>
+<select id="attending">
+<option value="">Select an option</option>
+<option value="Yes, Will Attend">Yes, Will Attend</option>
+<option value="Sorry, Can't Attend">Sorry, Can't Attend</option>
+</select>
+<div class="error" id="attendingError">Please select an option *</div>
+</div>
+<div class="form-group">
+<label>NUMBER OF GUESTS</label>
+<input type="number" id="guests" placeholder="Number of Guests" min="0">
+</div>
+<div class="form-group">
+<label>MESSAGE</label>
+<textarea id="message" rows="3" placeholder="Your message (optional)"></textarea>
+</div>
+<button type="submit" class="submit-btn" id="submitBtn">SEND RSVP</button>
 <div id="status"></div>
+</form>
 </div>
 </div>
 </div>
+
 <!-- THANK YOU MODAL WITH SECOND VIDEO -->
 <div class="modal-overlay" id="thankYouModal">
 <div class="modal-box">
 <div class="modal-video-wrap">
-<video muted loop playsinline preload="auto" id="thankYouVideo">
+<video loop playsinline preload="auto" id="thankYouVideo">
 <source src="Thankyou.mp4" type="video/mp4">
 </video>
 </div>
@@ -92,6 +117,7 @@
 </div>
 </div>
 </div>
+
 <script>
 const video = document.getElementById("heroVideo");
 const audio = document.getElementById("bgAudio");
@@ -175,12 +201,23 @@ function openThankYou(){
 }
 
 function closeThankYou(){
- thankYouModal.classList.remove("active");
  thankYouVideo.pause();
- if(isSoundOn){
- audio.play();
- video.muted = false;
- }
+ video.pause();
+ audio.pause();
+ // Try to close tab
+ window.close();
+ // Fallback - totally close invitation if browser blocks window.close()
+ setTimeout(()=>{
+   document.documentElement.innerHTML = `
+   <head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Thank You</title>
+   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond&display=swap" rel="stylesheet">
+   </head>
+   <body style="margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#f7f3ef;font-family:'Cormorant Garamond',serif;text-align:center;padding:20px;">
+     <div style="font-size:32px;">🕊</div>
+     <div style="font-family:'Great Vibes',cursive;font-size:64px;color:#7aa0b8;margin:10px 0;">Thank you!</div>
+     <div style="color:#5a6d7e;font-size:17px;line-height:1.6;">Your RSVP has been received.<br>Invitation closed.<br><br><span style="font-size:13px;opacity:.7;">You may now close this tab.</span></div>
+   </body>`;
+ }, 300);
 }
 
 closeModalBtn.addEventListener("click", closeThankYou);
