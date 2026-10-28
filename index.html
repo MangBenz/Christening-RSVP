@@ -100,17 +100,36 @@ let isSoundOn = false;
 video.muted = true;
 video.play().catch(()=>{});
 audio.volume = 0.7;
+
 function enableSound(){
-  video.muted = false; video.volume = 1;
-  audio.volume = 0.7;
-  audio.play().then(()=>{ video.play(); soundBtn.textContent = "🔊 SOUND ON"; isSoundOn = true; }).catch(()=>{ audio.play(); });
+ video.muted = false;
+ video.volume = 1;
+ audio.volume = 0.7;
+ audio.play().then(()=>{
+ video.play();
+ soundBtn.textContent = "🔊 SOUND ON";
+ isSoundOn = true;
+ }).catch(()=>{
+ audio.play();
+ });
 }
+
 function disableSound(){
-  video.muted = true; audio.pause();
-  soundBtn.textContent = "🔇 CLICK FOR SOUND"; isSoundOn = false;
+ video.muted = true;
+ audio.pause();
+ soundBtn.textContent = "🔇 CLICK FOR SOUND";
+ isSoundOn = false;
 }
-soundBtn.addEventListener("click", (e)=>{ e.stopPropagation(); if(isSoundOn) disableSound(); else enableSound(); });
-document.body.addEventListener("click", ()=>{ if(!isSoundOn) enableSound(); }, {once:true});
+
+soundBtn.addEventListener("click", (e)=>{
+ e.stopPropagation();
+ if(isSoundOn) disableSound();
+ else enableSound();
+});
+
+document.body.addEventListener("click", ()=>{
+ if(!isSoundOn) enableSound();
+}, {once:true});
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn1tFi6g8XqcPi1hJ6SrAenyEqlbrwRRubP0aEzojkyT9tCMO8hxyWB68_8p51tXaT/exec";
 const attendingSelect = document.getElementById("attending");
@@ -124,82 +143,99 @@ const closeModalBtn = document.getElementById("closeModalBtn");
 const submitBtn = document.getElementById("submitBtn");
 const statusEl = document.getElementById("status");
 
-let modalDelayTimeout = null;
-
 attendingSelect.addEventListener("change", () => {
-  attendingError.style.display = "none";
-  statusEl.innerText = "";
-  if(attendingSelect.value === "Sorry, Can't Attend"){
-    guestsInput.value = ""; guestsInput.disabled = true; guestsInput.placeholder = "Not needed";
-  } else { guestsInput.disabled = false; guestsInput.placeholder = "Number of Guests"; }
+ attendingError.style.display = "none";
+ statusEl.innerText = "";
+ if(attendingSelect.value === "Sorry, Can't Attend"){
+ guestsInput.value = "";
+ guestsInput.disabled = true;
+ guestsInput.placeholder = "Not needed";
+ } else {
+ guestsInput.disabled = false;
+ guestsInput.placeholder = "Number of Guests";
+ }
 });
-nameInput.addEventListener("input", ()=>{ nameError.style.display="none"; statusEl.innerText=""; });
+
+nameInput.addEventListener("input", ()=>{
+ nameError.style.display="none";
+ statusEl.innerText="";
+});
 
 function openThankYou(){
-  thankYouModal.classList.add("active");
-  thankYouVideo.pause();
-  thankYouVideo.currentTime = 0;
-  thankYouVideo.muted = true;
-
-  // 5 SECONDS DELAY BEFORE PLAYING MODAL VIDEO
-  clearTimeout(modalDelayTimeout);
-  modalDelayTimeout = setTimeout(()=>{
-    thankYouVideo.muted = false;
-    thankYouVideo.volume = 1;
-    thankYouVideo.play().catch(()=>{
-      thankYouVideo.muted = true;
-      thankYouVideo.play();
-    });
-  }, 200);
-
-  audio.pause();
-  video.muted = true;
+ thankYouModal.classList.add("active");
+ thankYouVideo.currentTime = 0;
+ thankYouVideo.muted = false;
+ thankYouVideo.volume = 1;
+ thankYouVideo.play().catch(()=>{
+ thankYouVideo.muted = true;
+ thankYouVideo.play();
+ });
+ audio.pause();
+ video.muted = true;
 }
+
 function closeThankYou(){
-  clearTimeout(modalDelayTimeout);
-  thankYouModal.classList.remove("active");
-  thankYouVideo.pause();
-  if(isSoundOn){ audio.play(); video.muted = false; }
+ thankYouModal.classList.remove("active");
+ thankYouVideo.pause();
+ if(isSoundOn){
+ audio.play();
+ video.muted = false;
+ }
 }
+
 closeModalBtn.addEventListener("click", closeThankYou);
-thankYouModal.addEventListener("click", (e)=>{ if(e.target === thankYouModal) closeThankYou(); });
+thankYouModal.addEventListener("click", (e)=>{
+ if(e.target === thankYouModal) closeThankYou();
+});
 
 document.getElementById("rsvpForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  let hasError = false;
-  const fullName = nameInput.value.trim();
-
-  if(fullName.length < 2){ nameError.style.display = "block"; hasError = true; }
-  else { nameError.style.display = "none"; }
-
-  if(!attendingSelect.value){ attendingError.style.display = "block"; hasError = true; }
-  else { attendingError.style.display = "none"; }
-
-  if(hasError){
-    statusEl.innerText = "Please complete the required fields *";
-    statusEl.style.color = "#d66";
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.innerText = "SENDING...";
-  statusEl.innerText = "Sending...";
-  statusEl.style.color = "#7aa0b8";
-
-  const data = { name: fullName, attending: attendingSelect.value, guests: guestsInput.value || "0", message: document.getElementById("message").value };
-  try{
-    await fetch(SCRIPT_URL, { method:"POST", mode:"no-cors", body:JSON.stringify(data) });
-    statusEl.innerText = "";
-    e.target.reset();
-    guestsInput.disabled = false;
-    openThankYou();
-  } catch(err){
-    statusEl.innerText = "Error sending, please try again.";
-    statusEl.style.color = "#d66";
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.innerText = "SEND RSVP";
-  }
+ e.preventDefault();
+ let hasError = false;
+ const fullName = nameInput.value.trim();
+ if(fullName.length < 2){
+ nameError.style.display = "block";
+ hasError = true;
+ } else {
+ nameError.style.display = "none";
+ }
+ if(!attendingSelect.value){
+ attendingError.style.display = "block";
+ hasError = true;
+ } else {
+ attendingError.style.display = "none";
+ }
+ if(hasError){
+ statusEl.innerText = "Please complete the required fields *";
+ statusEl.style.color = "#d66";
+ return;
+ }
+ submitBtn.disabled = true;
+ submitBtn.innerText = "SENDING...";
+ statusEl.innerText = "Sending...";
+ statusEl.style.color = "#7aa0b8";
+ const data = {
+ name: fullName,
+ attending: attendingSelect.value,
+ guests: guestsInput.value || "0",
+ message: document.getElementById("message").value
+ };
+ try{
+ await fetch(SCRIPT_URL, {
+ method:"POST",
+ mode:"no-cors",
+ body:JSON.stringify(data)
+ });
+ statusEl.innerText = "";
+ e.target.reset();
+ guestsInput.disabled = false;
+ openThankYou();
+ } catch(err){
+ statusEl.innerText = "Error sending, please try again.";
+ statusEl.style.color = "#d66";
+ } finally {
+ submitBtn.disabled = false;
+ submitBtn.innerText = "SEND RSVP";
+ }
 });
 </script>
 </body>
